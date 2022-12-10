@@ -12,7 +12,7 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
-            <Route exact path="/home">
+            <Route exact path="/entries">
               <HomePage />
             </Route>
             <Route exact path="/entries/:id">
@@ -21,10 +21,10 @@ const App: React.FC = () => {
             <Route exact path="/settings">
               <SettingsPage />
             </Route>
-            <Redirect exact path="/" to="/home" />
+            <Redirect exact path="/" to="/entries" />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/home">
+            <IonTabButton tab="home" href="/entries">
               <IonIcon icon={homeIcon} />
               <IonLabel>Home</IonLabel>
             </IonTabButton>
