@@ -46,6 +46,7 @@ const EntryPage: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <h2>{entry?.title}</h2>
+        <img src={entry?.pictureUrl} alt={entry?.title} />
         <p>{entry?.description}</p>
       </IonContent>
     </IonPage>
