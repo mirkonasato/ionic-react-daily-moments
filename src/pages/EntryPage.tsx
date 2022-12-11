@@ -18,6 +18,7 @@ const EntryPage: React.FC = () => {
       .collection('entries').doc(id);
     entryRef.get().then((doc) => setEntry(toEntry(doc)));
   }, [userId, id]);
+  console.log('[EntryPage] render');
   return (
     <IonPage>
       <IonHeader>
