@@ -1,5 +1,5 @@
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAuth } from '../auth';
@@ -38,16 +38,19 @@ const AddEntryPage: React.FC = () => {
   };
 
   const handlePictureClick = async () => {
-    // fileInputRef.current.click();
-    try {
-      const photo = await Camera.getPhoto({
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Prompt,
-        width: 600,
-      });
-      setPictureUrl(photo.webPath);
-    } catch (error) {
-      console.log('Camera error:', error);
+    if (isPlatform('capacitor')) {
+      try {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+          width: 600,
+        });
+        setPictureUrl(photo.webPath);
+      } catch (error) {
+        console.log('Camera error:', error);
+      }
+    } else {
+      fileInputRef.current.click();
     }
   };
 
