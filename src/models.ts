@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import { DocumentSnapshot } from '@firebase/firestore';
 
 export interface Entry {
   id: string;
@@ -8,6 +8,6 @@ export interface Entry {
   description: string;
 }
 
-export function toEntry(doc: firebase.firestore.DocumentSnapshot): Entry {
+export function toEntry(doc: DocumentSnapshot): Entry {
   return { id: doc.id, ...doc.data() } as Entry;
 }

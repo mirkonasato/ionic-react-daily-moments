@@ -1,3 +1,4 @@
+import { deleteDoc, doc, getDoc } from '@firebase/firestore';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { trash as trashIcon } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
@@ -17,15 +18,13 @@ const EntryPage: React.FC = () => {
   const { id } = useParams<RouteParams>();
   const [entry, setEntry] = useState<Entry>();
   useEffect(() => {
-    const entryRef = firestore.collection('users').doc(userId)
-      .collection('entries').doc(id);
-    entryRef.get().then((doc) => setEntry(toEntry(doc)));
+    const entryRef = doc(firestore, 'users', userId, 'entries', id);
+    getDoc(entryRef).then((doc) => setEntry(toEntry(doc)));
   }, [userId, id]);
 
   const handleDelete = async () => {
-    const entryRef = firestore.collection('users').doc(userId)
-      .collection('entries').doc(id);
-    await entryRef.delete();
+    const entryRef = doc(firestore, 'users', userId, 'entries', id);
+    await deleteDoc(entryRef);
     history.goBack();
   };
 

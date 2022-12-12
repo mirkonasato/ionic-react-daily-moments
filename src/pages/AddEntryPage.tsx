@@ -1,3 +1,5 @@
+import { addDoc, collection } from '@firebase/firestore';
+import { getDownloadURL, ref as storageRef, uploadBytes } from '@firebase/storage';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
@@ -6,11 +8,11 @@ import { useAuth } from '../auth';
 import { firestore, storage } from '../firebase';
 
 async function savePicture(blobUrl, userId) {
-  const pictureRef = storage.ref(`/users/${userId}/pictures/${Date.now()}`);
+  const pictureRef = storageRef(storage, `/users/${userId}/pictures/${Date.now()}`);
   const response = await fetch(blobUrl);
   const blob = await response.blob();
-  const snapshot = await pictureRef.put(blob);
-  const url = await snapshot.ref.getDownloadURL();
+  const snapshot = await uploadBytes(pictureRef, blob);
+  const url = getDownloadURL(snapshot.ref);
   console.log('saved picture:', url);
   return url;
 }
@@ -55,13 +57,12 @@ const AddEntryPage: React.FC = () => {
   };
 
   const handleSave = async () => {
-    const entriesRef = firestore.collection('users').doc(userId)
-      .collection('entries');
+    const entriesRef = collection(firestore, 'users', userId, 'entries');
     const entryData = { date, title, pictureUrl, description };
     if (!pictureUrl.startsWith('/assets')) {
       entryData.pictureUrl = await savePicture(pictureUrl, userId);
     }
-    const entryRef = await entriesRef.add(entryData);
+    const entryRef = await addDoc(entriesRef, entryData);
     console.log('saved:', entryRef.id);
     history.goBack();
   };

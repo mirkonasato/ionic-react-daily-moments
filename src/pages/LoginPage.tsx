@@ -1,3 +1,4 @@
+import { signInWithEmailAndPassword } from '@firebase/auth';
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
 import { Redirect } from 'react-router';
@@ -13,7 +14,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     try {
       setStatus({ loading: true, error: false });
-      const credential = await auth.signInWithEmailAndPassword(email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
       console.log('credential:', credential);
     } catch (error) {
       setStatus({ loading: false, error: true });

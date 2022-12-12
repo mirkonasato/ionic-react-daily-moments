@@ -1,3 +1,4 @@
+import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
 import { Redirect } from 'react-router';
@@ -13,7 +14,7 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async () => {
     try {
       setStatus({ loading: true, error: false });
-      const credential = await auth.createUserWithEmailAndPassword(email, password);
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
       console.log('credential:', credential);
     } catch (error) {
       setStatus({ loading: false, error: true });

@@ -1,3 +1,4 @@
+import { collection, query, limit, onSnapshot, orderBy } from '@firebase/firestore';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import { add as addIcon } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
@@ -9,11 +10,10 @@ import { Entry, toEntry } from '../models';
 const HomePage: React.FC = () => {
   const { userId } = useAuth();
   const [entries, setEntries] = useState<Entry[]>([]);
-  useEffect(() => {
-    const entriesRef = firestore.collection('users').doc(userId)
-      .collection('entries');
-    return entriesRef.orderBy('date', 'desc').limit(7)
-      .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)));
+  useEffect(() => {    
+    const entriesRef = collection(firestore, 'users', userId, 'entries');
+    const entriesQuery = query(entriesRef, orderBy('date', 'desc'), limit(7))
+    return onSnapshot(entriesQuery, ({ docs }) => setEntries(docs.map(toEntry)));
   }, [userId]);
   return (
     <IonPage>

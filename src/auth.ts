@@ -1,3 +1,4 @@
+import { onAuthStateChanged } from 'firebase/auth';
 import React, { useContext, useEffect, useState } from 'react';
 import { auth as firebaseAuth } from './firebase';
 
@@ -20,7 +21,7 @@ export function useAuth(): Auth {
 export function useAuthInit(): AuthInit {
   const [authInit, setAuthInit] = useState<AuthInit>({ loading: true });
   useEffect(() => {
-    return firebaseAuth.onAuthStateChanged((firebaseUser) => {
+    return onAuthStateChanged(firebaseAuth, (firebaseUser) => {
       const auth = firebaseUser
         ? { loggedIn: true, userId: firebaseUser.uid }
         : { loggedIn: false };

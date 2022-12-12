@@ -1,7 +1,7 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
+import { getAuth } from '@firebase/auth';
+import { getFirestore } from '@firebase/firestore';
+import { getStorage } from '@firebase/storage';
+import { initializeApp } from 'firebase/app';
 
 // Replace this with the config for your own Firebase project
 const firebaseConfig = {
@@ -14,7 +14,7 @@ const firebaseConfig = {
   appId: "???"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-export const auth = app.auth();
-export const firestore = app.firestore();
-export const storage = app.storage();
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const firestore = getFirestore(app);
+export const storage = getStorage(app);
