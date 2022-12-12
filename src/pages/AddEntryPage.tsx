@@ -1,3 +1,4 @@
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -34,6 +35,14 @@ const AddEntryPage: React.FC = () => {
       const pictureUrl = URL.createObjectURL(file);
       setPictureUrl(pictureUrl);
     }
+  };
+
+  const handlePictureClick = async () => {
+    // fileInputRef.current.click();
+    const photo = await Camera.getPhoto({
+      resultType: CameraResultType.Uri,
+    });
+    setPictureUrl(photo.webPath);
   };
 
   const handleSave = async () => {
@@ -78,7 +87,7 @@ const AddEntryPage: React.FC = () => {
               onChange={handleFileChange}
             />
             <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
-              onClick={() => fileInputRef.current.click()}
+              onClick={handlePictureClick}
             />
           </IonItem>
           <IonItem>

@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "start:android": "ionic capacitor run android --livereload --external",
     "build": "react-scripts build"
   },
   "dependencies": {
     "@capacitor/android": "4.6.1",
     "@capacitor/app": "4.1.1",
+    "@capacitor/camera": "4.1.4",
     "@capacitor/core": "4.6.1",
     "@capacitor/haptics": "4.1.0",
     "@capacitor/keyboard": "4.1.0",
