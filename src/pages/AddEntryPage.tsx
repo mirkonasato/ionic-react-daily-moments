@@ -1,4 +1,4 @@
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -39,17 +39,23 @@ const AddEntryPage: React.FC = () => {
 
   const handlePictureClick = async () => {
     // fileInputRef.current.click();
-    const photo = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-    });
-    setPictureUrl(photo.webPath);
+    try {
+      const photo = await Camera.getPhoto({
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
+        width: 600,
+      });
+      setPictureUrl(photo.webPath);
+    } catch (error) {
+      console.log('Camera error:', error);
+    }
   };
 
   const handleSave = async () => {
     const entriesRef = firestore.collection('users').doc(userId)
       .collection('entries');
     const entryData = { date, title, pictureUrl, description };
-    if (pictureUrl.startsWith('blob:')) {
+    if (!pictureUrl.startsWith('/assets')) {
       entryData.pictureUrl = await savePicture(pictureUrl, userId);
     }
     const entryRef = await entriesRef.add(entryData);
